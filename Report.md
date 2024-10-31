@@ -60,8 +60,7 @@ Byte-Level BPE is a popular tokenizer used by many LLMs today.
 The byte-level BPE is a subset of the BPE which uses bytes instead of characters. This is useful especially for a lot of unicode characters.
 
 2. **WordPiece**: This method is similar to BPE in its working process. However, instead of merging pairs based on their frequencies inside the corpus, the algorithm maximizes the likelihood of the training data by computing the conditional probability of the pairs, dividing the frequency of the pair tokens appearing together by the frequencies of each token. 
-
-`score=(freq_of_pair)/(freq_of_first_element×freq_of_second_element)`
+    `score=(freq_of_pair)/(freq_of_first_element×freq_of_second_element)`
 
 It is used by some auto-encoder models like BERT, DistilBERT, and ELECTRA.
 
