@@ -49,19 +49,25 @@ There are different types of tokenizers based on the algorithms used to break do
     - **Cons**:   
         - Depends heavily on the training corpus. Having poor data, such as spelling errors, may result in a malformed vocabulary.
         - Struggles to represent rare words.
-        - Difficualty in handeling large numbers thus affecting the performance of large language models.[^2]
-
-
-The most commonly used tokenizers today are the sub-word tokenizers, thanks to their ability to capture linguistic patterns that are crucial for language models. Some of the most popular ones are:
-
-1. **Byte Pair Encoding (BPE)**: This algorithm starts by breaking down a corpus into words (known as pre-tokenization). After that, the words are decomposed into pairs of characters, and the frequency of each pair inside the corpus is computed. The most frequent pairs are added to the vocabulary as new elements. This process is repeated for each consecutive pair or sequence of characters, and characters are merged sequentially based on their frequencies until a specific vocabulary size is reached.  
-
-
-2. **WordPiece**: This method is similar to BPE in its working process. However, instead of merging pairs based on their frequencies inside the corpus, the algorithm maximizes the likelihood of the training data by computing the conditional probability of the pairs, dividing the probability of the pair tokens appearing together by the probability of each token. It is used by some autoencoder models like BERT, DistilBERT, and ELECTRA.
+        - Difficulty in handling large numbers thus affecting the performance of large language models.[^2]
 
 
 
-3. **SentencePiece**: One problem that faces other algorithms is that they first pre-tokenize the text into a sequence of words using whitespaces—generally—then tokenize the words further into tokens. However, this may cause problems as whitespace is not necessarily the real separator of words. Some languages, like Chinese, Korean and Japanese are non-segmented languages. As a solution, the SentencePiece tokenizer treats the text as a raw text stream composed of both spaces and characters. It then applies either the BPE or WordPiece algorithm.[^3] Many well-known models today, like LLaMA and Mistral, use the SentencePiece BPE tokenization method.
+**The most commonly used tokenizers today are the sub-word tokenizers**, thanks to their ability to capture linguistic patterns that are crucial for language models. Some of the most popular ones are:
+
+1. **Byte Pair Encoding (BPE)**: This algorithm starts by breaking down a corpus into words (this operation is known as pre-tokenization). After that, the words are decomposed into pairs of characters, and the frequency of each pair inside the corpus is computed. The most frequent pairs are added to the vocabulary as new elements. This process is repeated, and characters are merged sequentially based on their frequencies until a specific vocabulary size is reached.  
+Byte-Level BPE is a popular tokenizer used by many LLMs today. 
+The byte-level BPE is a subset of the BPE which uses bytes instead of characters. This is useful especially for a lot of unicode characters.
+
+2. **WordPiece**: This method is similar to BPE in its working process. However, instead of merging pairs based on their frequencies inside the corpus, the algorithm maximizes the likelihood of the training data by computing the conditional probability of the pairs, dividing the frequency of the pair tokens appearing together by the frequencies of each token. 
+
+`score=(freq_of_pair)/(freq_of_first_element×freq_of_second_element)`
+
+It is used by some auto-encoder models like BERT, DistilBERT, and ELECTRA.
+
+
+3. **SentencePiece**: One problem that faces other algorithms is that they first pre-tokenize the text into a sequence of words (using white spaces generally) then tokenize the words further into tokens. However, this may cause problems as whitespace is not necessarily the real separator of words. Some languages, like Chinese, Korean and Japanese are non-segmented languages. As a solution, the SentencePiece tokenizer treats the text as a raw text stream composed of both spaces and characters. It then applies either the BPE or WordPiece algorithm.[^3] Many well-known models today, like LLaMA and Mistral, use the SentencePiece BPE tokenization method. 
+A recent study[^4] showed that the BPE tokenizer implemented by the SentencePiece library outperformed the BPE implemented by the [Huggingface library](https://huggingface.co/)
 
 
 
@@ -72,3 +78,5 @@ The most commonly used tokenizers today are the sub-word tokenizers, thanks to t
 
 [^3]: https://huggingface.co/docs/transformers/en/tokenizer_summary#summary-of-the-tokenizers
 
+
+[^4]: Ali, M., Fromm, M., Thellmann, K., Rutmann, R., Lübbering, M., Leveling, J., Klug, K., Ebert, J., Doll, N., Buschhoff, J. S., Jain, C., Weber, A. A., Jurkschat, L., Abdelwahab, H., John, C., Suarez, P. O., Ostendorff, M., Weinbach, S., Sifa, R., … Flores-Herr, N. (2023). Tokenizer Choice For LLM Training: Negligible or Crucial? (Version 4). arXiv. https://doi.org/10.48550/ARXIV.2310.08754
