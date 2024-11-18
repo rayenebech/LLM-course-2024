@@ -27,8 +27,8 @@ There are different types of tokenizers based on the algorithms used to break do
         - Requires no training.
         - Fast in computations.
     - **Cons**: 
-        - Presents a challenge for agglutinative languages like Finnish and Turkish as one word can contain many information that need to be seperately handled by the model.
-        - Results in a very large vocabulary size (if not infinite), as every word is an element of the vocabulary, and all possible derivations of a word are also new words in the vocabulary.
+        - Presents a challenge for agglutinative languages like Finnish, Hungarian and Turkish as one word can contain many information that need to be seperately handled by the model.
+        - Results in a very large vocabulary that contains every word and all its possible derivations.
 
 2. **Character Tokenization**: Breaks down a sentence into individual characters.
     - **Pros**:
@@ -69,6 +69,9 @@ A recent study[^4] showed that the BPE tokenizer implemented by the SentencePiec
 
 
 
+# **Lab 03 : LLM evaluation**
+
+
 
 [^1]: Toraman, C., Yilmaz, E. H., Şahinuc, F., & Ozcelik, O. (2023). Impact of tokenization on language models: An analysis for Turkish. ACM Transactions on Asian and Low-Resource Language Information Processing, 22(4), Article 116. https://doi.org/10.1145/3578707
 
@@ -78,3 +81,7 @@ A recent study[^4] showed that the BPE tokenizer implemented by the SentencePiec
 
 
 [^4]: Ali, M., Fromm, M., Thellmann, K., Rutmann, R., Lübbering, M., Leveling, J., Klug, K., Ebert, J., Doll, N., Buschhoff, J. S., Jain, C., Weber, A. A., Jurkschat, L., Abdelwahab, H., John, C., Suarez, P. O., Ostendorff, M., Weinbach, S., Sifa, R., … Flores-Herr, N. (2023). Tokenizer Choice For LLM Training: Negligible or Crucial? (Version 4). arXiv. https://doi.org/10.48550/ARXIV.2310.08754
+
+
+
+
