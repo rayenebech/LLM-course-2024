@@ -71,6 +71,15 @@ A recent study[^4] showed that the BPE tokenizer implemented by the SentencePiec
 
 # **Lab 03 : LLM evaluation**
 
+Large Language Models are trained using huge amounts of data. This data is usually taken from publicly available sources on the internet. The data can also reflect the culture and norms of a specific group of people. For example a model trained on Turkish data will learn a lot about Turkish traditions and culture. This can also affect the way these LLMs do reasoning and generate text. Another important aspect is the data bias. If the data is biased, the model will probably also be biased. 
+
+Multilingual models are trained on data from multiple languages. This can be beneficial as the model can learn from different cultures and norms. However, will the same model generate the same response for the same prompt in different languages? Does this change from one model to another? In this report, we try to explore how the language of the prompt affects the response of the model. We use two multilingual models for this purpose. The first model is the open-source model [Qwen/Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct) that is scoring very high on the [Open LLMs Leaderboard](https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard)
+The second model is Google's [gemini-1.5-flash](https://deepmind.google/technologies/gemini/flash/) model.
+Through this experiment, we aim to evaluate the response of the model from two different perspectives:
+- Cross-Lingual Test: How the same model responds to the same prompt in different languages?
+- Cross-model Test: How different models respond to the same prompt in the same language? 
+
+Please refer to the notebook for more details on the experiments' details and the used prompts.
 
 
 [^1]: Toraman, C., Yilmaz, E. H., Şahinuc, F., & Ozcelik, O. (2023). Impact of tokenization on language models: An analysis for Turkish. ACM Transactions on Asian and Low-Resource Language Information Processing, 22(4), Article 116. https://doi.org/10.1145/3578707
