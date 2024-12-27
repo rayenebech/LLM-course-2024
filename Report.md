@@ -68,6 +68,7 @@ The byte-level BPE is a subset of the BPE which uses bytes instead of characters
 A recent study[^4] showed that the BPE tokenizer implemented by the SentencePiece library outperformed the BPE implemented by the [Huggingface library](https://huggingface.co/)
 
 
+# **Lab 02: Prompt Engineering
 
 # **Lab 03 : LLM evaluation**
 
