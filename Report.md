@@ -150,6 +150,9 @@ Whereas for Phi-3.5 mini model, the response included a whole section to conside
 ## Conclusion
 Different prompting techniques affect the length, style and format of the model's response. Using a very basic prompt is risky as the model may not adhere to the desired format or give the required information. Few-shot prompting gave the best responses because it guides the model to generate more customized responses that align with the user's needs. The Chain of Thoughts (CoT) method can help the model to consider different factors and generate more detailed responses. However, the model may still need more guidance to follow the desired format and provide all the required information.
 
+
+N.B. Please check the notebooks on this repository to get access to the answers of other tasks like using Phi-3.5 mini model. For the in-context learning notebook, the codes were changed to use a huggingface model. Though the model chosen was small in size, the computation resources offered by Google Colab were not enough to generate the summaries due to the length of the prompts. 
+
 # **Lab 03 : LLM evaluation**
 
 Large Language Models are trained using huge amounts of data. This data is usually taken from publicly available sources on the internet. The data can also reflect the culture and norms of a specific group of people. For example a model trained on Turkish data will learn a lot about Turkish traditions and culture. This can also affect the way these LLMs do reasoning and generate text. Another important aspect is the data bias. If the data is biased, the model will probably also be biased. 
