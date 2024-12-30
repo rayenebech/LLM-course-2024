@@ -1,8 +1,28 @@
+
+
+# Table of Contents
+1. [Lab 01 : Tokenizers](#lab-01--tokenizers)
+    1. [Tokenizers and Tokenization](#1-tokenizers-and-tokenization)
+    2. [Importance of Tokenizers for Language Modeling and LLMs](#2-importance-of-tokenizers-for-language-modeling-and-llms)
+    3. [Different Tokenization Algorithms](#3-different-tokenization-algorithms)
+    4. [The Most Popular Tokenizers](#the-most-popular-tokenizers)
+2. [Lab 02: Prompt Engineering](#lab-02-prompt-engineering)
+    1. [Basic Prompt](#1-basic-prompt)
+    2. [Zero Shot Prompt](#2-zero-shot-prompt)
+    3. [One Shot Prompt](#2-one-shot-prompt)
+    4. [Two Shots Prompt](#2-two-shots-prompt)
+    5. [Chain of Thoughts (CoT)](#2-chain-of-thoughts-cot)
+    6. [Conclusion](#conclusion)
+3. [Lab 03 : LLM evaluation](#lab-03--llm-evaluation)
+
+
+<div style="page-break-after: always;"></div>
+
 # **Lab 01 : Tokenizers**
-## 1. What are tokenizers?
+## 1. Tokenizers and Tokenization
 A tokenizer is a method of breaking words into smaller parts called `tokens`. In English, suffixes, prefixes, and word stems can be examples of tokens. These tokens can be mapped into numerical values called `token ids` using a lookup table based on the language's vocabulary. When training a tokenizer from scratch, the vocabulary is built based on the tokenizer's algorithm and the training corpus. Some people refer to the words that remain as whole words after tokenization as tokens, and the parts of words that were divided as sub-tokens.
 
-## 2. Why are they important for language modeling and LLMs?
+## 2. Importance of Tokenizers for Language Modeling and LLMs
 Tokenization is a necessary step for any language model. Here are some of the most important aspects of tokenization for language models:
 
 - **Machine's Language**: Machines cannot understand human language. The tokenizers translate a sequence of words into numerical IDs that can be fed to the language models.
@@ -17,7 +37,7 @@ Tokenization is a necessary step for any language model. Here are some of the mo
 
 - **OOV Problem**: The vocabulary of language models, no matter how big it is, remains limited by a constant size. If a new word comes that does not exist in the vocabulary, the model will not be able to construct meaningful embeddings for it (Out-of-Vocabulary). However, with many tokenizers today (sub-word tokenizers), this problem is mitigated by breaking the new word into known tokens. If no known token is found in the vocabulary, the new word can be decomposed into a sequence of characters but never remains an unknown entity for the model.
 
-## 3. What different tokenization algorithms are there and which ones are the most popular ones and why?
+## 3. Different Tokenization Algorithms
 
 There are different types of tokenizers based on the algorithms used to break down a sequence of words into tokens. We can discuss three main tokenization methods:
 
@@ -51,8 +71,7 @@ There are different types of tokenizers based on the algorithms used to break do
         - Struggles to represent rare words.
         - Difficulty in handling large numbers thus affecting the performance of large language models.[^2]
 
-
-
+## The Most Popular Tokenizers
 **The most commonly used tokenizers today are the sub-word tokenizers**, thanks to their ability to capture linguistic patterns that are crucial for language models. Some of the most popular ones are:
 
 1. **Byte Pair Encoding (BPE)**: This algorithm starts by breaking down a corpus into words (this operation is known as pre-tokenization). After that, the words are decomposed into pairs of characters, and the frequency of each pair inside the corpus is computed. The most frequent pairs are added to the vocabulary as new elements. This process is repeated, and characters are merged sequentially based on their frequencies until a specific vocabulary size is reached.  
@@ -67,8 +86,69 @@ The byte-level BPE is a subset of the BPE which uses bytes instead of characters
 3. **SentencePiece**: One problem that faces other algorithms is that they first pre-tokenize the text into a sequence of words (using white spaces generally) then tokenize the words further into tokens. However, this may cause problems as whitespace is not necessarily the real separator of words. Some languages, like Chinese, Korean and Japanese are non-segmented languages. As a solution, the SentencePiece tokenizer treats the text as a raw text stream composed of both spaces and characters. It then applies either the BPE or WordPiece algorithm.[^3] Many well-known models today, like LLaMA and Mistral, use the SentencePiece BPE tokenization method. 
 A recent study[^4] showed that the BPE tokenizer implemented by the SentencePiece library outperformed the BPE implemented by the [Huggingface library](https://huggingface.co/)
 
+<div style="page-break-after: always;"></div>
 
-# **Lab 02: Prompt Engineering
+# **Lab 02: Prompt Engineering**
+
+In this lab, different types of prompt techniques were evaluated. The following prompt was used as a "user" message to test the capabilities of the model with each prompting method: 
+- USER_PROMPT: "I am traveling with my husband and my child to Helsinki for four days. Plan our trip."
+
+
+## Experiements
+For each experiment the "system" prompt was modified to control the model's behaviour. The temperature was set to 0.0 to ensure that the outputs are only affected by the prompt not by the randomness of the model. The following experiments were conducted: 
+### 1. Basic Prompt 
+The basic prompt used is: 
+- SYSTEM_PROMPT: "You are a helpful and concise assistant."
+
+This one will work as a baseline for other approaches. The model's response to the user prompt using Gemini's model was as shown in the picture below.
+![Basic Prompt](images/basic.png)
+The response from Phi-3.5 mini model was:
+![Basic Prompt Phi](images/basic_phi.png)
+
+We notice two major problems with the response:
+1. The answer does not provide any information about the trip costs.
+2. The tone of the answer is not professional.
+With the Phi-3.5 mini model, the response was also longer than expected.
+### 2. Zero Shot Prompt
+Now we use a more customized prompt by adding a persona, a goal and a tone to the model. The new system prompt is:
+```
+ZERO_SHOT_PROMPT = You are a professional Travel Consultant. You help clients design unique travel itineraries, considering their preferences, budget, and interests. Your response should be consice and accurate.
+```
+However, the model could not answer at the first attempt. The model was affected by the prompt and therefore asks extra questions from the user to be able to generate a plan. The full answer from Gemini's model is shown below:
+![Zero Shot Prompt](images/zero.png)
+
+Fir Phi-3.5 mini model, there was no much difference between the basic prompt and the customized one. The full response was:
+![Zero Shot Prompt Phi](images/zero_phi.png)
+
+### 2. One Shot Prompt
+The same system prompt used in zero-shot prompting was also used in this setting. By adding one QA pair example to the chat history, the model can be guided to generate a response that aligns more with the user's needs. The example used can be  found in `week-2/gemini-chatbot/prompts.env` file. The response of Gemini model to the user prompt is shown below:
+![One Shot Prompt](images/one.png)
+The response from the Phi-3.5 mini model was:
+![One Shot Prompt Phi](images/one_phi.png)
+The response now feels more formal, includes some rough cost estimations and provides a more detailed plan for the trip. 
+
+
+### 2. Two Shots Prompt
+This time we use two pairs of QA examples to guide the model. The examples used can be found in `week-2/gemini-chatbot/prompts.env` file. The response of the model to the user prompt is shown below:
+![Two Shot Prompt](images/two.png)
+The response from the Phi-3.5 mini model was:
+![Two Shot Prompt Phi](images/two_phi.png)
+We notice the the response is shorter than the one-shot prompt. The response aligns more with the provided examples.
+### 2. Chain of Thoughts (CoT)
+We tested another type of prompting to see how the model would respond. In addition to the prompt used in zero-shot prompting, a few sentences were added to encourage the model to consider wider oprions and evaluate each one. The full prompt is shown below:
+```
+You are a professional Travel Consultant. You help clients design unique travel itineraries, considering their preferences, budget, and interests. Your response should be consice and accurate. Think step by step before giving any suggestions. Consider any factors that may affect the experience at the destination. Think of many plans then choose the best ones. 
+```
+![COT 1](images/cot_1.png)
+![COT 2](images/cot_2.png)
+
+We can clearly see that the answer now contains more than one plan. Each plan considers different factors like thinking of children-friendly activities and the weather. the model also gives details about how accessible the places are. However details of the costs are now missing.
+Whereas for Phi-3.5 mini model, the response included a whole section to consider various factors. Interestingly, all dinner suggestions are given for the same place. This could be due to the model's focus on the accessibility of the place and the family-friendly environment. The full response is shown below:
+![COT 1 Phi](images/cot_phi.png)
+
+
+## Conclusion
+Different prompting techniques affect the length, style and format of the model's response. Using a very basic prompt is risky as the model may not adhere to the desired format or give the required information. Few-shot prompting gave the best responses because it guides the model to generate more customized responses that align with the user's needs. The Chain of Thoughts (CoT) method can help the model to consider different factors and generate more detailed responses. However, the model may still need more guidance to follow the desired format and provide all the required information.
 
 # **Lab 03 : LLM evaluation**
 
