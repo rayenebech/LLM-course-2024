@@ -153,6 +153,8 @@ Different prompting techniques affect the length, style and format of the model'
 
 N.B. Please check the notebooks on this repository to get access to the answers of other tasks like using Phi-3.5 mini model. For the in-context learning notebook, the codes were changed to use a huggingface model. Though the model chosen was small in size, the computation resources offered by Google Colab were not enough to generate the summaries due to the length of the prompts. 
 
+<div style="page-break-after: always;"></div>
+
 # **Lab 03 : LLM evaluation**
 
 Large Language Models are trained using huge amounts of data. This data is usually taken from publicly available sources on the internet. The data can also reflect the culture and norms of a specific group of people. For example a model trained on Turkish data will learn a lot about Turkish traditions and culture. This can also affect the way these LLMs do reasoning and generate text. Another important aspect is the data bias. If the data is biased, the model will probably also be biased. 
@@ -165,15 +167,64 @@ Through this experiment, we aim to evaluate the response of the model from two d
 
 Please refer to the notebook for more details on the experiments' details and the used prompts.
 
+<div style="page-break-after: always;"></div>
 
-[^1]: Toraman, C., Yilmaz, E. H., Şahinuc, F., & Ozcelik, O. (2023). Impact of tokenization on language models: An analysis for Turkish. ACM Transactions on Asian and Low-Resource Language Information Processing, 22(4), Article 116. https://doi.org/10.1145/3578707
+# **Lab 04: DPO Finetuning**
 
-[^2]: https://www.linkedin.com/pulse/exploring-byte-pair-encoding-bpe-premai-znv8f/
+The model "Qwen/Qwen2-1.5B-Instruct" was fine-tuned using DPO learning. The objective of the training was to make the LLM sound more human. The dataset used in this task is [HumanLLMs/Human-Like-DPO-Dataset](https://huggingface.co/datasets/HumanLLMs/Human-Like-DPO-Dataset). Due to computation requirements, the training was not possible on Google Colab, the training was done on the cloud provider [RunPod](https://www.runpod.io/) using the `RTX 6000 Ada` GPU machine. The batch size used was 16 and the training was limited to 200 training steps. The training was tracked using Wandb platform. The rewards for the rejected answers was continously decreasing whereas the rewards for the accepted answers was increasing. However, the training loss was decreasing gradually until reaching almost zero after 50 training steps. This indicates a possible overfitting. The charts from wandb are attached below:
+![chosen rewards](images/lab_4/exp1/chosen.png)
+![rejected rewards](images/lab_4/exp1/rejected.png)
+![loss](images/lab_4/exp1/loss.png)
 
-[^3]: https://huggingface.co/docs/transformers/en/tokenizer_summary#summary-of-the-tokenizers
+TO tackle this problem a few changes to the training parameters were done. The learning rate was decreased to 1e-5 and the training steps were increased to 500. THe beta value was also increased from 0.1 to 1 to strenghthen more the influence of the preference. The training was done again. 
+
+The charts from wandb are attached below:
+![chosen rewards](images/lab_4/exp2/chosen.png)
+![rejected rewards](images/lab_4/exp2/rejected.png)
+![loss](images/lab_4/exp2/loss.png)
 
 
-[^4]: Ali, M., Fromm, M., Thellmann, K., Rutmann, R., Lübbering, M., Leveling, J., Klug, K., Ebert, J., Doll, N., Buschhoff, J. S., Jain, C., Weber, A. A., Jurkschat, L., Abdelwahab, H., John, C., Suarez, P. O., Ostendorff, M., Weinbach, S., Sifa, R., … Flores-Herr, N. (2023). Tokenizer Choice For LLM Training: Negligible or Crucial? (Version 4). arXiv. https://doi.org/10.48550/ARXIV.2310.08754
+<div style="page-break-after: always;"></div>
+
+# **Lab 05: Agentic RAG (Task 03)**
+In this lab, we explore the use of different LLM agents to power a finance assistant chatbot. The chatbot is designed to provide detailed responses to user queries about a company's stock information, sustainability scores, and institutional holders. Additionally, it can visualize stock prices using the charts of the Streamlit UI. Each function can be thought of as a specialized agent, tailored to handle specific tasks. External information is provided from the Yahoo Finance API and integrated into the chatbot as contextual data to support accurate and relevant responses. We tested three models in this setup: the OpenAI model gpt-4o-mini, which has access to all the specialized functions; and the Gemini and LLama models, which function as baseline "vanilla" models without tool access. Notably, classic retrieval-augmented generation (RAG) approaches are unsuitable for this task because they rely on static data, whereas real-time financial information is essential for accuracy.
+LangSmith was used to track the calls of different agens (functions) and the final response.
+
+1.  **Use Case 01: Company Shareholder Information:**
+    - Without RAG: The model's answer is bound by its limited knowledge cutoff up to Ovtober 2023. The answer is not up-to-date and lacks the numerical values of the shares.
+    ![Company Shareholder Information without RAG](images/lab_5/1/no_rag.png)
+    - With RAG: The model's answer is more detailed and up-to-date (up to the last update of March 2024). It provides the numerical values of the shares and the percentage of the shares held by the institutional holders. We also notice that the order of the shareholders is different from the previous answer.
+    ![Company Shareholder Information with RAG](images/lab_5/1/rag_1.png)
+    ![Company Shareholder Information with RAG](images/lab_5/1/rag_2.png)
+
+2. **Use Case 02: Company Sustainability Scores:**
+    - Without RAG: The model's answer focuses more on the general information about the company's sustainability efforts and vision. The information provided gives more positive feedback about the company's sustainability efforts.
+    ![Company Sustainability Scores without RAG](images/lab_5/2/no_rag_1.png)
+    ![Company Sustainability Scores without RAG](images/lab_5/2/no_rag_2.png)
+    - With RAG: The model's answer is more detailed and backed by numerical values. The evaluation of the company's sustainability scores is more critical and shows the company's weaknesses in some areas.
+    ![Company Sustainability Scores with RAG](images/lab_5/2/rag.png)
+  
+3. **Use Case 03: Company Stock Information:**
+    - Without RAG: The model could not retrieve any information about the stock information
+    ![Company Stock Information without RAG](images/lab_5/3/no_rag.png)
+    - With RAG: The model's answer is accurate and plots the stock price chart for the user.
+    ![Company Stock Information with RAG](images/lab_5/3/rag.png)
+
+
+# **Lab 06: GraphRAG (Task 04)**
+
+<div style="page-break-after: always;"></div>
+
+# References
+
+[^1]: Toraman, C., Yilmaz, E. H., Şahinuc, F., & Ozcelik, O. (2023). Impact of tokenization on language models: An analysis for Turkish. *ACM Transactions on Asian and Low-Resource Language Information Processing*, 22(4), Article 116. [https://doi.org/10.1145/3578707](https://doi.org/10.1145/3578707)
+
+[^2]: Exploring Byte Pair Encoding (BPE). [https://www.linkedin.com/pulse/exploring-byte-pair-encoding-bpe-premai-znv8f/](https://www.linkedin.com/pulse/exploring-byte-pair-encoding-bpe-premai-znv8f/)
+
+[^3]: Summary of Tokenizers. Hugging Face Documentation. [https://huggingface.co/docs/transformers/en/tokenizer_summary#summary-of-the-tokenizers](https://huggingface.co/docs/transformers/en/tokenizer_summary#summary-of-the-tokenizers)
+
+[^4]: Ali, M., Fromm, M., Thellmann, K., Rutmann, R., Lübbering, M., Leveling, J., Klug, K., Ebert, J., Doll, N., Buschhoff, J. S., Jain, C., Weber, A. A., Jurkschat, L., Abdelwahab, H., John, C., Suarez, P. O., Ostendorff, M., Weinbach, S., Sifa, R., … Flores-Herr, N. (2023). Tokenizer Choice For LLM Training: Negligible or Crucial? (Version 4). *arXiv*. [https://doi.org/10.48550/ARXIV.2310.08754](https://doi.org/10.48550/ARXIV.2310.08754)
+
 
 
 
