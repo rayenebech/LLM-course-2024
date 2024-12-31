@@ -22,8 +22,7 @@
 7. [Lab 06: Use cases and applications of LLMs](#lab-06-use-cases-and-applications-of-llms)
     1. [Part 1](#part-1)
     2. [Part 2](#part-2)
-
-
+8. [References](#references)
 
 <div style="page-break-after: always;"></div>
 
@@ -79,10 +78,10 @@ There are different types of tokenizers based on the algorithms used to break do
         - Requires no training.
         - Fast in computations.
     - **Cons**: 
-        - It can be hard to capture semantic patterns between words. more effort is required for language models to be able to capture the co-occurence of some characters and the linguistic patterns.[^1]
-        - The number of output tokens becomes very large when dealing with long texts. This may lead to information loss as it causes a challenge for language models as they have limited size input length.[^1]
+        - It can be hard to capture semantic patterns between words. more effort is required for language models to be able to capture the co-occurence of some characters and the linguistic patterns.<sup>[1](#ref1)</sup>
+        - The number of output tokens becomes very large when dealing with long texts. This may lead to information loss as it causes a challenge for language models as they have limited size input length.<sup>[1](#ref1)</sup>
 
-3. **Sub-word Tokenization**: Breaks down sentences into tokens (either whole words or parts of words). It can be seen as a balance between word and character tokenization.
+3. **Sub-word Tokenization**: Brea0ks down sentences into tokens (either whole words or parts of words). It can be seen as a balance between word and character tokenization.
     - **Pros**: 
         - These tokenizers are built based on the linguistic characteristics of languages, which increases the probability of having meaningful tokens and sub-tokens that actually make sense. (If we look at the vocabulary of some tokenizers, we can see known prefixes, suffixes, and stems.)
         - Increases the ability of language models to build semantic patterns and understand the linguistic rules of a specific language.
@@ -90,7 +89,7 @@ There are different types of tokenizers based on the algorithms used to break do
     - **Cons**:   
         - Depends heavily on the training corpus. Having poor data, such as spelling errors, may result in a malformed vocabulary.
         - Struggles to represent rare words.
-        - Difficulty in handling large numbers thus affecting the performance of large language models.[^2]
+        - Difficulty in handling large numbers thus affecting the performance of large language models.<sup>[2](#ref2)</sup>
 
 ## The Most Popular Tokenizers
 **The most commonly used tokenizers today are the sub-word tokenizers**, thanks to their ability to capture linguistic patterns that are crucial for language models. Some of the most popular ones are:
@@ -104,8 +103,8 @@ The byte-level BPE is a subset of the BPE which uses bytes instead of characters
     `score=(freq_of_pair)/(freq_of_first_element×freq_of_second_element)`
 
 
-3. **SentencePiece**: One problem that faces other algorithms is that they first pre-tokenize the text into a sequence of words (using white spaces generally) then tokenize the words further into tokens. However, this may cause problems as whitespace is not necessarily the real separator of words. Some languages, like Chinese, Korean and Japanese are non-segmented languages. As a solution, the SentencePiece tokenizer treats the text as a raw text stream composed of both spaces and characters. It then applies either the BPE or WordPiece algorithm.[^3] Many well-known models today, like LLaMA and Mistral, use the SentencePiece BPE tokenization method. 
-A recent study[^4] showed that the BPE tokenizer implemented by the SentencePiece library outperformed the BPE implemented by the [Huggingface library](https://huggingface.co/)
+3. **SentencePiece**: One problem that faces other algorithms is that they first pre-tokenize the text into a sequence of words (using white spaces generally) then tokenize the words further into tokens. However, this may cause problems as whitespace is not necessarily the real separator of words. Some languages, like Chinese, Korean and Japanese are non-segmented languages. As a solution, the SentencePiece tokenizer treats the text as a raw text stream composed of both spaces and characters. It then applies either the BPE or WordPiece algorithm.<sup>[3](#ref3)</sup> Many well-known models today, like LLaMA and Mistral, use the SentencePiece BPE tokenization method. 
+A recent study<sup>[4](#ref4)</sup> showed that the BPE tokenizer implemented by the SentencePiece library outperformed the BPE implemented by the [Huggingface library](https://huggingface.co/)
 
 <div style="page-break-after: always;"></div>
 
@@ -202,7 +201,6 @@ The Qwen model, however, gave different answers for English than for the other l
 Notably, for Turkish, the model failed to generate YES/NO answers. For the prompts where the investor was male, the model gave extra details about the pros and cons of each decision while leaning more toward accepting the offer. The answers also highlighted the importance of discussing all possible investment consequences with all parties. For the female investor prompts, however, the model failed to generate a comprehensive answer. The model asked for more details to be able to generate an answer.
 
 - **Cross-Model Test**:  
-
 We can see that for English language the Qwen model's results differ than the Gemini model. For French and arabic, the same results were obtained from both models. For Turkish, the Qwen model failed to generate YES/NO answers. The Gemini model gave answers that align with the output format.
 
 ### Qwen Model Results
@@ -315,6 +313,7 @@ Output: In the first quarter of 2024, the total operating income for Google Serv
 Evaluation: The retrieved information was relevant and the model could do the calculations correctly.
 
 ```
+<div style="page-break-after: always;"></div>
 
 ## Part 2
 Please refer to the directory `week-6/Part_b` to access all files and codes of this section. 
@@ -377,13 +376,13 @@ The LLM-based implementation captures all major types of errors (phonetic, omiss
 
 # References
 
-[^1]: Toraman, C., Yilmaz, E. H., Şahinuc, F., & Ozcelik, O. (2023). Impact of tokenization on language models: An analysis for Turkish. *ACM Transactions on Asian and Low-Resource Language Information Processing*, 22(4), Article 116. [https://doi.org/10.1145/3578707](https://doi.org/10.1145/3578707)
+<a id="ref1"></a>1. Toraman, C., Yilmaz, E. H., Şahinuc, F., & Ozcelik, O. (2023). Impact of tokenization on language models: An analysis for Turkish. *ACM Transactions on Asian and Low-Resource Language Information Processing*, 22(4), Article 116. [https://doi.org/10.1145/3578707](https://doi.org/10.1145/3578707)
 
-[^2]: Exploring Byte Pair Encoding (BPE). [https://www.linkedin.com/pulse/exploring-byte-pair-encoding-bpe-premai-znv8f/](https://www.linkedin.com/pulse/exploring-byte-pair-encoding-bpe-premai-znv8f/)
+<a id="ref2"></a>2. Exploring Byte Pair Encoding (BPE). [https://www.linkedin.com/pulse/exploring-byte-pair-encoding-bpe-premai-znv8f/](https://www.linkedin.com/pulse/exploring-byte-pair-encoding-bpe-premai-znv8f/)
 
-[^3]: Summary of Tokenizers. Hugging Face Documentation. [https://huggingface.co/docs/transformers/en/tokenizer_summary#summary-of-the-tokenizers](https://huggingface.co/docs/transformers/en/tokenizer_summary#summary-of-the-tokenizers)
+<a id="ref3"></a>3. Summary of Tokenizers. Hugging Face Documentation. [https://huggingface.co/docs/transformers/en/tokenizer_summary#summary-of-the-tokenizers](https://huggingface.co/docs/transformers/en/tokenizer_summary#summary-of-the-tokenizers)
 
-[^4]: Ali, M., Fromm, M., Thellmann, K., Rutmann, R., Lübbering, M., Leveling, J., Klug, K., Ebert, J., Doll, N., Buschhoff, J. S., Jain, C., Weber, A. A., Jurkschat, L., Abdelwahab, H., John, C., Suarez, P. O., Ostendorff, M., Weinbach, S., Sifa, R., … Flores-Herr, N. (2023). Tokenizer Choice For LLM Training: Negligible or Crucial? (Version 4). *arXiv*. [https://doi.org/10.48550/ARXIV.2310.08754](https://doi.org/10.48550/ARXIV.2310.08754)
+<a id="ref4"></a>4. Ali, M., Fromm, M., Thellmann, K., Rutmann, R., Lübbering, M., Leveling, J., Klug, K., Ebert, J., Doll, N., Buschhoff, J. S., Jain, C., Weber, A. A., Jurkschat, L., Abdelwahab, H., John, C., Suarez, P. O., Ostendorff, M., Weinbach, S., Sifa, R., … Flores-Herr, N. (2023). Tokenizer Choice For LLM Training: Negligible or Crucial? (Version 4). *arXiv*. [https://doi.org/10.48550/ARXIV.2310.08754](https://doi.org/10.48550/ARXIV.2310.08754)
 
 
 
