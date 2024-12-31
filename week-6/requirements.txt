@@ -1,0 +1,10 @@
+llama-index-vector-stores-qdrant 
+llama-index-readers-file 
+llama-index-embeddings-fastembed 
+llama-index-llms-openai
+llama_index.llms.gemini
+qdrant_client
+python-dotenv
+langsmith
+llmsherpa
+IPython
