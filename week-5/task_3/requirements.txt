@@ -1,0 +1,15 @@
+#accelerate
+#bitsandbytes
+google-generativeai
+langsmith
+matplotlib
+numpy
+openai
+pillow
+python-dotenv
+requests
+streamlit
+torch
+tqdm
+transformers
+yfinance

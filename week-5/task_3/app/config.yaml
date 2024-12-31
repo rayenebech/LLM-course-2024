@@ -1,0 +1,21 @@
+openai:
+  model_name: gpt-4o-mini
+  temperature: 0
+  max_tokens: 4096
+  stream: True
+  system_prompt: You are a helpful finance assistant. If the user asks you to plot something just call the corresponding function. the function will plot the data itself. You can analyze the data and comment on it.
+
+gemini:
+  model_name: gemini-1.5-flash
+  temperature: 0
+  max_tokens: 8000
+  stream: True
+
+llama:
+  model_name: meta-llama/Llama-3.1-8B-Instruct
+  temperature: 0.1
+  max_tokens: 2048
+  stream: True
+  model_cache: /app/llm_models
+
+system_prompt: You are a helpful finance assistant.

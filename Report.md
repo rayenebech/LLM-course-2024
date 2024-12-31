@@ -15,6 +15,11 @@
     6. [Conclusion](#conclusion)
 3. [Lab 03 : LLM evaluation](#lab-03--llm-evaluation)
 
+4. [Lab 04: DPO Finetuning](#lab-04-dpo-finetuning)
+5. [Lab 05: Agentic RAG (Task 03)](#lab-05-agentic-rag-task-03)
+
+
+
 
 <div style="page-break-after: always;"></div>
 
@@ -167,6 +172,8 @@ Through this experiment, we aim to evaluate the response of the model from two d
 
 Please refer to the notebook for more details on the experiments' details and the used prompts.
 
+
+
 <div style="page-break-after: always;"></div>
 
 # **Lab 04: DPO Finetuning**
@@ -176,13 +183,23 @@ The model "Qwen/Qwen2-1.5B-Instruct" was fine-tuned using DPO learning. The obje
 ![rejected rewards](images/lab_4/exp1/rejected.png)
 ![loss](images/lab_4/exp1/loss.png)
 
-TO tackle this problem a few changes to the training parameters were done. The learning rate was decreased to 1e-5 and the training steps were increased to 500. THe beta value was also increased from 0.1 to 1 to strenghthen more the influence of the preference. The training was done again. 
+TO tackle this problem a few changes to the training parameters were done. The learning rate was decreased to 1e-5 and the warmup steps were decreased to 50. The training steps were kept to 200. THe beta value was also increased from 0.1 to 1, then from 1 to 10 in a third experiement to strenghthen more the influence of the preference. The training was done again. 
 
 The charts from wandb are attached below:
-![chosen rewards](images/lab_4/exp2/chosen.png)
-![rejected rewards](images/lab_4/exp2/rejected.png)
+![chosen rewards](images/lab_4/exp2/chosen_rewards.png)
+![rejected rewards](images/lab_4/exp2/rejected_rewards.png)
 ![loss](images/lab_4/exp2/loss.png)
 
+We also invetigate the log probabilities of chosen and rejected answers. 
+![chosen log probs](images/lab_4/exp2/chosen_logs.png)
+![rejected log probs](images/lab_4/exp2/rejected_logs.png)
+
+We notice that the model still struggles to give an answer that aligns with the preference training though we see that the rewards of the chosen answers are increasing. This may be due to the small number of training steps. The model may need more training steps to be able to generate better answers.
+Please refer to the notbook `week-4/DPO_Finetuning.ipynb` for more details on the training process, the used parameters and some inference examples.
+
+At the end of the trainig, the model was uploaded to HuggingFace model hub. The model can be accessed using the following link: [brayene/DPO-Qwen2-1.5B-Instruct-Human-like](https://huggingface.co/brayene/DPO-Qwen2-1.5B-Instruct-Human-like)
+
+![model card](images/lab_4/hf_hub.png)
 
 <div style="page-break-after: always;"></div>
 
@@ -211,7 +228,9 @@ LangSmith was used to track the calls of different agens (functions) and the fin
     ![Company Stock Information with RAG](images/lab_5/3/rag.png)
 
 
-# **Lab 06: GraphRAG (Task 04)**
+Please refer to the application folder under `week-5/task_3` for the Streamlit UI code and the models functionalities.
+
+# **Lab 06: **
 
 <div style="page-break-after: always;"></div>
 
